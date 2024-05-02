@@ -32,11 +32,18 @@ close_swap() {
     echo "Swap 已成功关闭"
 }
 
+uninstall() {
+    rm "$0"
+    echo "脚本已卸载"
+    exit 0
+}
+
 main_menu() {
     echo "欢迎使用服务器功能选择器"
     echo "1. 设置 Swap"
     echo "2. 关闭 Swap"
-    echo "3. 退出"
+    echo "3. 卸载脚本"
+    echo "4. 退出"
 }
 
 check_installation
@@ -54,6 +61,9 @@ while true; do
             close_swap
             ;;
         3)
+            uninstall
+            ;;
+        4)
             echo "感谢使用，再见！"
             break
             ;;
