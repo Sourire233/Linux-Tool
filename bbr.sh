@@ -5,7 +5,7 @@ while true; do
     echo "1. 检测BBR状态"
     echo "2. 开启BBR（BBR FQ）"
     echo "3. 退出脚本"
-    read choice
+    read -p "请输入相应数字：" choice
 
     case $choice in
         1)
