@@ -24,6 +24,21 @@ while true; do
             sudo sh -c 'echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf'
             sudo sysctl -p
             echo "BBR（BBR FQ）已开启"
+
+            # 询问是否重启以使BBR生效
+            read -p "是否想要重启以使BBR生效？(Y/N)：" restart_choice
+            case $restart_choice in
+                [Yy])
+                    echo "正在重启系统..."
+                    sudo reboot
+                    ;;
+                [Nn])
+                    echo "请手动重启系统以使BBR生效"
+                    ;;
+                *)
+                    echo "无效的选项，默认为不重启"
+                    ;;
+            esac
             ;;
         3)
             echo "退出脚本"
