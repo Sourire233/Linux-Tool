@@ -24,50 +24,6 @@ if [ "$os" != "ubuntu-16.04" ] && [ "$os" != "ubuntu-18.04" ] && [ "$os" != "ubu
     exit 1
 fi
 
-# 检查内核版本是否符合要求
-kernel_version=$(uname -r)
-if [[ "$kernel_version" != *"4.9."* ]]; then
-    echo "当前内核版本 $kernel_version 不适用于启用 BBR"
-    read -p "是否安装兼容的内核版本（y/n）？" choice
-    case "$choice" in
-        y|Y ) 
-            echo "安装兼容的内核版本..."
-            # 安装适用的内核版本
-            if [[ "$os" == *"ubuntu"* ]]; then
-                apt-get update
-                apt-get install -y linux-generic-hwe-${VERSION_ID}
-            elif [[ "$os" == *"debian"* ]]; then
-                apt-get update
-                apt-get install -y linux-image-amd64
-            fi
-            if [ $? -ne 0 ]; then
-                echo "安装兼容的内核版本失败"
-                exit 1
-            fi
-            echo "已安装兼容的内核版本，请重新启动系统以应用更改。"
-            exit 0
-            ;;
-        n|N ) 
-            echo "已取消安装兼容的内核版本"
-            exit 0
-            ;;
-        * ) echo "请输入 y 或 n";;
-    esac
-fi
-
-function check_bbr_status {
-    local bbr_status=$(sysctl net.ipv4.tcp_congestion_control 2>/dev/null | awk '{print $3}')
-    if [ "$bbr_status" == "bbr" ]; then
-        echo "BBR 当前已启用"
-    else
-        echo "BBR 未启用"
-    fi
-}
-
-function show_kernel_info {
-    uname -a
-}
-
 function enable_bbr {
     if [[ "$os" == *"ubuntu"* ]]; then
         modprobe tcp_bbr
@@ -93,15 +49,9 @@ function enable_bbr {
 }
 
 PS3="请选择一个选项："
-options=("检查 BBR 状态" "显示内核信息" "启用 BBR" "退出")
+options=("启用 BBR" "退出")
 select opt in "${options[@]}"; do
     case $opt in
-        "检查 BBR 状态")
-            check_bbr_status
-            ;;
-        "显示内核信息")
-            show_kernel_info
-            ;;
         "启用 BBR")
             enable_bbr
             ;;
