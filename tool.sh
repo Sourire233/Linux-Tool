@@ -38,12 +38,22 @@ uninstall() {
     exit 0
 }
 
+manage_bbr() {
+    echo "正在下载BBR管理脚本..."
+    wget -O bbr.sh https://raw.githubusercontent.com/Sourire233/Linux-Tool/main/home/bbr.sh
+    chmod +x bbr.sh
+    echo "执行BBR管理脚本..."
+    ./bbr.sh
+    rm bbr.sh
+}
+
 main_menu() {
     echo "欢迎使用服务器功能选择器"
     echo "1. 设置 Swap"
     echo "2. 关闭 Swap"
-    echo "3. 卸载脚本"
-    echo "4. 退出"
+    echo "3. BBR 管理"
+    echo "4. 卸载脚本"
+    echo "5. 退出"
 }
 
 check_installation
@@ -61,9 +71,12 @@ while true; do
             close_swap
             ;;
         3)
-            uninstall
+            manage_bbr
             ;;
         4)
+            uninstall
+            ;;
+        5)
             echo "感谢使用，再见！"
             break
             ;;
