@@ -1,6 +1,10 @@
 #!/bin/bash
 
+# 脚本版本号
+VERSION="1.0.0"
+
 while true; do
+    echo "BBR脚本版本号：$VERSION"
     echo "请选择您要执行的操作："
     echo "1. 检测BBR状态"
     echo "2. 开启BBR（BBR FQ）"
