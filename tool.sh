@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# 设置别名
+alias tool='wget -O tool.sh https://raw.githubusercontent.com/Sourire233/Linux-Tool/main/tool.sh && chmod +x tool.sh && ./tool.sh'
+
 check_installation() {
     # 检查是否安装了 fallocate、mkswap 和 swapon 命令
     if ! command -v fallocate >/dev/null 2>&1 || ! command -v mkswap >/dev/null 2>&1 || ! command -v swapon >/dev/null 2>&1; then
