@@ -12,18 +12,23 @@ check_installation() {
 set_swap() {
     swap_size="$1"
     swap_file="/swapfile"
-    # 创建一个指定大小的 swap 文件
+    # 关闭已存在的 Swap
+    swapoff "$swap_file" 2>/dev/null
+    # 删除已存在的 Swap 文件
+    rm "$swap_file" 2>/dev/null
+    # 创建一个指定大小的 Swap 文件
     fallocate -l "${swap_size}M" "$swap_file"
-    # 将文件设置为 swap 文件
+    # 将文件设置为 Swap 文件
     mkswap "$swap_file"
-    # 启用 swap 文件
+    # 启用 Swap 文件
     swapon "$swap_file"
     echo "Swap 已成功设置为 ${swap_size}MB"
 }
 
 close_swap() {
-    swapoff /swapfile
-    rm /swapfile
+    swap_file="/swapfile"
+    swapoff "$swap_file" 2>/dev/null
+    rm "$swap_file" 2>/dev/null
     echo "Swap 已成功关闭"
 }
 
