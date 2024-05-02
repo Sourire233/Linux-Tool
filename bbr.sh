@@ -24,6 +24,15 @@ if [ "$os" != "ubuntu-16.04" ] && [ "$os" != "ubuntu-18.04" ] && [ "$os" != "ubu
     exit 1
 fi
 
+function check_bbr_status {
+    local bbr_status=$(sysctl net.ipv4.tcp_congestion_control 2>/dev/null | awk '{print $3}')
+    if [ "$bbr_status" == "bbr" ]; then
+        echo "BBR 当前已启用"
+    else
+        echo "BBR 未启用"
+    fi
+}
+
 function enable_bbr {
     if [[ "$os" == *"ubuntu"* ]]; then
         modprobe tcp_bbr
@@ -49,9 +58,12 @@ function enable_bbr {
 }
 
 PS3="请选择一个选项："
-options=("启用 BBR" "退出")
+options=("检查 BBR 状态" "启用 BBR" "退出")
 select opt in "${options[@]}"; do
     case $opt in
+        "检查 BBR 状态")
+            check_bbr_status
+            ;;
         "启用 BBR")
             enable_bbr
             ;;
