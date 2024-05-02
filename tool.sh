@@ -21,33 +21,20 @@ set_swap() {
     echo "Swap 已成功设置为 ${swap_size}MB"
 }
 
-view_status() {
-    free -h
+close_swap() {
+    swapoff /swapfile
+    rm /swapfile
+    echo "Swap 已成功关闭"
 }
-
-start_server() {
-    echo "服务器已启动"
-}
-
-stop_server() {
-    echo "服务器已关闭"
-}
-
-restart_server() {
-    echo "服务器已重启"
-}
-
-check_installation
 
 main_menu() {
     echo "欢迎使用服务器功能选择器"
     echo "1. 设置 Swap"
-    echo "2. 查看服务器状态"
-    echo "3. 启动服务器"
-    echo "4. 关闭服务器"
-    echo "5. 重启服务器"
-    echo "6. 退出"
+    echo "2. 关闭 Swap"
+    echo "3. 退出"
 }
+
+check_installation
 
 while true; do
     main_menu
@@ -58,14 +45,15 @@ while true; do
             read -p "请输入需要设置的 Swap 大小（单位：MB）：" swap_size
             set_swap "$swap_size"
             ;;
-        2) view_status ;;
-        3) start_server ;;
-        4) stop_server ;;
-        5) restart_server ;;
-        6)
+        2)
+            close_swap
+            ;;
+        3)
             echo "感谢使用，再见！"
             break
             ;;
-        *) echo "无效的选择，请重新输入" ;;
+        *)
+            echo "无效的选择，请重新输入"
+            ;;
     esac
 done
