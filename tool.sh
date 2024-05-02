@@ -39,26 +39,33 @@ restart_server() {
 
 check_installation
 
-# 检查参数数量
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <operation>"
-    echo "Available operations: set_swap, view_status, start_server, stop_server, restart_server"
-    exit 1
-fi
+main_menu() {
+    echo "欢迎使用服务器功能选择器"
+    echo "1. 设置 Swap"
+    echo "2. 查看服务器状态"
+    echo "3. 启动服务器"
+    echo "4. 关闭服务器"
+    echo "5. 重启服务器"
+    echo "6. 退出"
+}
 
-# 根据参数执行相应操作
-case $1 in
-    "set_swap") 
-        read -p "请输入需要设置的 Swap 大小（单位：MB）：" swap_size
-        set_swap "$swap_size"
-        ;;
-    "view_status") view_status ;;
-    "start_server") start_server ;;
-    "stop_server") stop_server ;;
-    "restart_server") restart_server ;;
-    *)
-        echo "Error: Invalid operation."
-        echo "Available operations: set_swap, view_status, start_server, stop_server, restart_server"
-        exit 1
-        ;;
-esac
+while true; do
+    main_menu
+    read -p "请选择您要执行的操作（输入数字）：" choice
+
+    case $choice in
+        1)
+            read -p "请输入需要设置的 Swap 大小（单位：MB）：" swap_size
+            set_swap "$swap_size"
+            ;;
+        2) view_status ;;
+        3) start_server ;;
+        4) stop_server ;;
+        5) restart_server ;;
+        6)
+            echo "感谢使用，再见！"
+            break
+            ;;
+        *) echo "无效的选择，请重新输入" ;;
+    esac
+done
