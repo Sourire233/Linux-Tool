@@ -10,7 +10,12 @@ while true; do
     case $choice in
         1)
             echo "正在检测BBR状态..."
-            sudo sysctl net.ipv4.tcp_congestion_control | grep bbr
+            bbr_status=$(sysctl net.ipv4.tcp_congestion_control | awk -F "=" '{print $2}' | tr -d '[:space:]')
+            if [ "$bbr_status" == "bbr" ]; then
+                echo "BBR已开启"
+            else
+                echo "BBR未开启"
+            fi
             ;;
         2)
             echo "正在开启BBR（BBR FQ）..."
